@@ -1,0 +1,9 @@
+{
+	"name": "brio-adf",
+	"location": "centralindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "9726925d-b042-478b-b9fd-3b6bfa774a34",
+		"tenantId": "6e75cca6-47f0-47a3-a928-9d5315750bd9"
+	}
+}

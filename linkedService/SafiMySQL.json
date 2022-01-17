@@ -1,0 +1,16 @@
+{
+	"name": "SafiMySQL",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "MySql",
+		"typeProperties": {
+			"connectionString": "server=BRIO-LT-Safi;port=3306;database=brio_recon;user=datafactory;sslmode=1;usesystemtruststore=0",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI2ZTBjYTgyNC04ZDk3LTQyMzktYmVkYS00Y2NmZmYyMWUzN2QiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "BrioSafiIR",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
