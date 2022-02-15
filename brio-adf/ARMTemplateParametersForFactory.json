@@ -1,0 +1,54 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "brio-adf"
+		},
+		"AzureDatabricks1_accessToken": {
+			"value": ""
+		},
+		"Brio_Recon_SqlServerLS_connectionString": {
+			"value": ""
+		},
+		"Brio_Recon_SqlServerLS_password": {
+			"value": ""
+		},
+		"LS_ADLS_Briosa_accountKey": {
+			"value": ""
+		},
+		"LS_FreshdeskDL_accountKey": {
+			"value": ""
+		},
+		"LS_SQL_FreshDesk_connectionString": {
+			"value": ""
+		},
+		"LS_brio_recon_MySql_connectionString": {
+			"value": ""
+		},
+		"SafiMySQL_connectionString": {
+			"value": ""
+		},
+		"ls_batchdata_connectionString": {
+			"value": ""
+		},
+		"ls_db1_connectionString": {
+			"value": ""
+		},
+		"ls_saazADLS2_accountKey": {
+			"value": ""
+		},
+		"Brio_Recon_SqlServerLS_properties_typeProperties_userName": {
+			"value": "brio developer"
+		},
+		"LS_ADLS_Briosa_properties_typeProperties_url": {
+			"value": "https://briosa.dfs.core.windows.net"
+		},
+		"LS_FreshdeskDL_properties_typeProperties_url": {
+			"value": "https://briofreshdesk.dfs.core.windows.net"
+		},
+		"ls_saazADLS2_properties_typeProperties_url": {
+			"value": "https://saazdlgen2.dfs.core.windows.net/"
+		}
+	}
+}

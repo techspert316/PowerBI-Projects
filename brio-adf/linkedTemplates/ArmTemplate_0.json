@@ -1,0 +1,647 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "brio-adf"
+		},
+		"AzureDatabricks1_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'AzureDatabricks1'"
+		},
+		"LS_ADLS_Briosa_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'LS_ADLS_Briosa'"
+		},
+		"LS_FreshdeskDL_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'LS_FreshdeskDL'"
+		},
+		"LS_SQL_FreshDesk_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LS_SQL_FreshDesk'"
+		},
+		"ls_batchdata_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_batchdata'"
+		},
+		"ls_db1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_db1'"
+		},
+		"ls_saazADLS2_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'ls_saazADLS2'"
+		},
+		"Brio_Recon_SqlServerLS_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'Brio_Recon_SqlServerLS'"
+		},
+		"Brio_Recon_SqlServerLS_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'Brio_Recon_SqlServerLS'"
+		},
+		"LS_brio_recon_MySql_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LS_brio_recon_MySql'"
+		},
+		"SafiMySQL_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'SafiMySQL'"
+		},
+		"LS_ADLS_Briosa_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://briosa.dfs.core.windows.net"
+		},
+		"LS_FreshdeskDL_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://briofreshdesk.dfs.core.windows.net"
+		},
+		"ls_saazADLS2_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://saazdlgen2.dfs.core.windows.net/"
+		},
+		"Brio_Recon_SqlServerLS_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "brio developer"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/Wait')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Wait1",
+						"type": "Wait",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"waitTimeInSeconds": 1
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-01-17T11:22:18Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureDatabricks1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://adb-2089860471800420.0.azuredatabricks.net",
+					"accessToken": {
+						"type": "SecureString",
+						"value": "[parameters('AzureDatabricks1_accessToken')]"
+					},
+					"existingClusterId": "1228-065830-qfg1krps"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_ADLS_Briosa')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('LS_ADLS_Briosa_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('LS_ADLS_Briosa_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_FreshdeskDL')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('LS_FreshdeskDL_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('LS_FreshdeskDL_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_SQL_FreshDesk')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"parameters": {
+					"DBName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('LS_SQL_FreshDesk_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_batchdata')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('ls_batchdata_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_db1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('ls_db1_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_saazADLS2')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('ls_saazADLS2_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('ls_saazADLS2_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/BrioSafiIR')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/integrationRuntime1')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "Managed",
+				"typeProperties": {
+					"computeProperties": {
+						"location": "Central India",
+						"dataFlowProperties": {
+							"computeType": "General",
+							"coreCount": 8,
+							"timeToLive": 10,
+							"cleanup": false
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/integrationRuntime2')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/default')]",
+			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks",
+			"apiVersion": "2018-06-01",
+			"properties": {},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_batchdata",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"schema": {
+						"type": "string"
+					},
+					"tablename": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": {
+						"value": "@dataset().schema",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset().tablename",
+						"type": "Expression"
+					},
+					"type": "expression"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_batchdata')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_SQL_FreshDesk')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_SQL_FreshDesk",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"DBName": {
+							"value": "@dataset().DbName",
+							"type": "Expression"
+						}
+					}
+				},
+				"parameters": {
+					"DbName": {
+						"type": "string"
+					},
+					"Schema": {
+						"type": "string"
+					},
+					"TableName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": {
+						"value": "@dataset().Schema",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset().TableName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_SQL_FreshDesk')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedText1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_ADLS_Briosa",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "umar"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_ADLS_Briosa')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Brio_Recon_SqlServerLS')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"connectionString": "[parameters('Brio_Recon_SqlServerLS_connectionString')]",
+					"userName": "[parameters('Brio_Recon_SqlServerLS_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('Brio_Recon_SqlServerLS_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "BrioSafiIR",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/BrioSafiIR')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_brio_recon_MySql')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "MySql",
+				"typeProperties": {
+					"connectionString": "[parameters('LS_brio_recon_MySql_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "BrioSafiIR",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/BrioSafiIR')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SafiMySQL')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "MySql",
+				"typeProperties": {
+					"connectionString": "[parameters('SafiMySQL_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "BrioSafiIR",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/BrioSafiIR')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SqlServerTable1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Brio_Recon_SqlServerLS",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "PartnerId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CustomerId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CustomerName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CustomerDomainName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CustomerCountry",
+						"type": "nvarchar"
+					},
+					{
+						"name": "InvoiceNumber",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "MpnId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "OrderId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "OrderDate",
+						"type": "date"
+					},
+					{
+						"name": "ProductId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SkuId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "AvailabilityId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SkuName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ProductName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ChargeType",
+						"type": "nvarchar"
+					},
+					{
+						"name": "UnitPrice",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "Quantity",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "Subtotal",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "TaxTotal",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "Total",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "Currency",
+						"type": "nvarchar"
+					},
+					{
+						"name": "PriceAdjustmentDescription",
+						"type": "nvarchar"
+					},
+					{
+						"name": "PublisherName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "PublisherId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "SubscriptionDescription",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SubscriptionId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ChargeStartDate",
+						"type": "date"
+					},
+					{
+						"name": "ChargeEndDate",
+						"type": "date"
+					},
+					{
+						"name": "TermAndBillingCycle",
+						"type": "nvarchar"
+					},
+					{
+						"name": "EffectiveUnitPrice",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "UnitType",
+						"type": "nvarchar"
+					},
+					{
+						"name": "AlternateId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "BillableQuantity",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "BillingFrequency",
+						"type": "nvarchar"
+					},
+					{
+						"name": "PricingCurrency",
+						"type": "nvarchar"
+					},
+					{
+						"name": "PCToBCExchangeRate",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "PCToBCExchangeRateDate",
+						"type": "date"
+					},
+					{
+						"name": "MeterDescription",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ReservationOrderId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CreditReasonCode",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SubscriptionStartDate",
+						"type": "date"
+					},
+					{
+						"name": "SubscriptionEndDate",
+						"type": "date"
+					},
+					{
+						"name": "ReferenceId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ProductQualifiers",
+						"type": "nvarchar"
+					},
+					{
+						"name": "PromotionId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Month",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "daily"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Brio_Recon_SqlServerLS')]"
+			]
+		}
+	]
+}

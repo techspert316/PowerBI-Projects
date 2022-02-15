@@ -1,0 +1,147 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "brio-adf"
+		},
+		"AzureDatabricks1_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'AzureDatabricks1'"
+		},
+		"Brio_Recon_SqlServerLS_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'Brio_Recon_SqlServerLS'"
+		},
+		"Brio_Recon_SqlServerLS_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'Brio_Recon_SqlServerLS'"
+		},
+		"LS_ADLS_Briosa_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'LS_ADLS_Briosa'"
+		},
+		"LS_FreshdeskDL_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'LS_FreshdeskDL'"
+		},
+		"LS_SQL_FreshDesk_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LS_SQL_FreshDesk'"
+		},
+		"LS_brio_recon_MySql_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LS_brio_recon_MySql'"
+		},
+		"SafiMySQL_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'SafiMySQL'"
+		},
+		"ls_batchdata_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_batchdata'"
+		},
+		"ls_db1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_db1'"
+		},
+		"ls_saazADLS2_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'ls_saazADLS2'"
+		},
+		"Brio_Recon_SqlServerLS_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "brio developer"
+		},
+		"LS_ADLS_Briosa_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://briosa.dfs.core.windows.net"
+		},
+		"LS_FreshdeskDL_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://briofreshdesk.dfs.core.windows.net"
+		},
+		"ls_saazADLS2_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://saazdlgen2.dfs.core.windows.net/"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "brio-adf_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"AzureDatabricks1_accessToken": {
+						"value": "[parameters('AzureDatabricks1_accessToken')]"
+					},
+					"LS_ADLS_Briosa_accountKey": {
+						"value": "[parameters('LS_ADLS_Briosa_accountKey')]"
+					},
+					"LS_FreshdeskDL_accountKey": {
+						"value": "[parameters('LS_FreshdeskDL_accountKey')]"
+					},
+					"LS_SQL_FreshDesk_connectionString": {
+						"value": "[parameters('LS_SQL_FreshDesk_connectionString')]"
+					},
+					"ls_batchdata_connectionString": {
+						"value": "[parameters('ls_batchdata_connectionString')]"
+					},
+					"ls_db1_connectionString": {
+						"value": "[parameters('ls_db1_connectionString')]"
+					},
+					"ls_saazADLS2_accountKey": {
+						"value": "[parameters('ls_saazADLS2_accountKey')]"
+					},
+					"Brio_Recon_SqlServerLS_connectionString": {
+						"value": "[parameters('Brio_Recon_SqlServerLS_connectionString')]"
+					},
+					"Brio_Recon_SqlServerLS_password": {
+						"value": "[parameters('Brio_Recon_SqlServerLS_password')]"
+					},
+					"LS_brio_recon_MySql_connectionString": {
+						"value": "[parameters('LS_brio_recon_MySql_connectionString')]"
+					},
+					"SafiMySQL_connectionString": {
+						"value": "[parameters('SafiMySQL_connectionString')]"
+					},
+					"LS_ADLS_Briosa_properties_typeProperties_url": {
+						"value": "[parameters('LS_ADLS_Briosa_properties_typeProperties_url')]"
+					},
+					"LS_FreshdeskDL_properties_typeProperties_url": {
+						"value": "[parameters('LS_FreshdeskDL_properties_typeProperties_url')]"
+					},
+					"ls_saazADLS2_properties_typeProperties_url": {
+						"value": "[parameters('ls_saazADLS2_properties_typeProperties_url')]"
+					},
+					"Brio_Recon_SqlServerLS_properties_typeProperties_userName": {
+						"value": "[parameters('Brio_Recon_SqlServerLS_properties_typeProperties_userName')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
