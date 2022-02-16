@@ -1,5 +1,13 @@
 {
 	"name": "brio-adf",
+	"properties": {
+		"globalParameters": {
+			"pipelinetrigger": {
+				"type": "string",
+				"value": "Brio123"
+			}
+		}
+	},
 	"location": "centralindia",
 	"identity": {
 		"type": "SystemAssigned",
