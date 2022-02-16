@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'AzureDatabricks1'"
 		},
+		"LS_1_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'LS_1'"
+		},
 		"LS_ADLS_Briosa_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'LS_ADLS_Briosa'"
@@ -51,6 +55,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'SafiMySQL'"
 		},
+		"LS_1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://saazdlgen2.dfs.core.windows.net"
+		},
 		"LS_ADLS_Briosa_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://briosa.dfs.core.windows.net"
@@ -73,31 +81,6 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/Wait')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Wait1",
-						"type": "Wait",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"waitTimeInSeconds": 1
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"annotations": [],
-				"lastPublishTime": "2022-01-17T11:22:18Z"
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/AzureDatabricks1')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -111,6 +94,23 @@
 						"value": "[parameters('AzureDatabricks1_accessToken')]"
 					},
 					"existingClusterId": "1228-065830-qfg1krps"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('LS_1_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('LS_1_accountKey')]"
+					}
 				}
 			},
 			"dependsOn": []
@@ -338,12 +338,12 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/DelimitedText1')]",
+			"name": "[concat(parameters('factoryName'), '/Sink')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "LS_ADLS_Briosa",
+					"referenceName": "LS_1",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
@@ -351,7 +351,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileSystem": "umar"
+						"fileSystem": "mrf"
 					},
 					"columnDelimiter": ",",
 					"escapeChar": "\\",
@@ -361,7 +361,173 @@
 				"schema": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_ADLS_Briosa')]"
+				"[concat(variables('factoryId'), '/linkedServices/LS_1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Source')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "daily.csv",
+						"fileSystem": "usagebasedrecon"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_1')]"
 			]
 		},
 		{
@@ -427,220 +593,81 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/SqlServerTable1')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
+			"name": "[concat(parameters('factoryName'), '/Wait')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Brio_Recon_SqlServerLS",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SqlServerTable",
-				"schema": [
+				"activities": [
 					{
-						"name": "PartnerId",
-						"type": "nvarchar"
-					},
-					{
-						"name": "CustomerId",
-						"type": "nvarchar"
-					},
-					{
-						"name": "CustomerName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "CustomerDomainName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "CustomerCountry",
-						"type": "nvarchar"
-					},
-					{
-						"name": "InvoiceNumber",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "MpnId",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "OrderId",
-						"type": "nvarchar"
-					},
-					{
-						"name": "OrderDate",
-						"type": "date"
-					},
-					{
-						"name": "ProductId",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SkuId",
-						"type": "nvarchar"
-					},
-					{
-						"name": "AvailabilityId",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SkuName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "ProductName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "ChargeType",
-						"type": "nvarchar"
-					},
-					{
-						"name": "UnitPrice",
-						"type": "float",
-						"precision": 15
-					},
-					{
-						"name": "Quantity",
-						"type": "tinyint",
-						"precision": 3
-					},
-					{
-						"name": "Subtotal",
-						"type": "float",
-						"precision": 15
-					},
-					{
-						"name": "TaxTotal",
-						"type": "tinyint",
-						"precision": 3
-					},
-					{
-						"name": "Total",
-						"type": "float",
-						"precision": 15
-					},
-					{
-						"name": "Currency",
-						"type": "nvarchar"
-					},
-					{
-						"name": "PriceAdjustmentDescription",
-						"type": "nvarchar"
-					},
-					{
-						"name": "PublisherName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "PublisherId",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "SubscriptionDescription",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SubscriptionId",
-						"type": "nvarchar"
-					},
-					{
-						"name": "ChargeStartDate",
-						"type": "date"
-					},
-					{
-						"name": "ChargeEndDate",
-						"type": "date"
-					},
-					{
-						"name": "TermAndBillingCycle",
-						"type": "nvarchar"
-					},
-					{
-						"name": "EffectiveUnitPrice",
-						"type": "float",
-						"precision": 15
-					},
-					{
-						"name": "UnitType",
-						"type": "nvarchar"
-					},
-					{
-						"name": "AlternateId",
-						"type": "nvarchar"
-					},
-					{
-						"name": "BillableQuantity",
-						"type": "float",
-						"precision": 15
-					},
-					{
-						"name": "BillingFrequency",
-						"type": "nvarchar"
-					},
-					{
-						"name": "PricingCurrency",
-						"type": "nvarchar"
-					},
-					{
-						"name": "PCToBCExchangeRate",
-						"type": "float",
-						"precision": 15
-					},
-					{
-						"name": "PCToBCExchangeRateDate",
-						"type": "date"
-					},
-					{
-						"name": "MeterDescription",
-						"type": "nvarchar"
-					},
-					{
-						"name": "ReservationOrderId",
-						"type": "nvarchar"
-					},
-					{
-						"name": "CreditReasonCode",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SubscriptionStartDate",
-						"type": "date"
-					},
-					{
-						"name": "SubscriptionEndDate",
-						"type": "date"
-					},
-					{
-						"name": "ReferenceId",
-						"type": "nvarchar"
-					},
-					{
-						"name": "ProductQualifiers",
-						"type": "nvarchar"
-					},
-					{
-						"name": "PromotionId",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Month",
-						"type": "nvarchar"
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".csv"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Source",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Sink",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
 					}
 				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "daily"
-				}
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Brio_Recon_SqlServerLS')]"
+				"[concat(variables('factoryId'), '/datasets/Source')]",
+				"[concat(variables('factoryId'), '/datasets/Sink')]"
 			]
 		}
 	]

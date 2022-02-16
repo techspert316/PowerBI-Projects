@@ -14,6 +14,9 @@
 		"Brio_Recon_SqlServerLS_password": {
 			"value": ""
 		},
+		"LS_1_accountKey": {
+			"value": ""
+		},
 		"LS_ADLS_Briosa_accountKey": {
 			"value": ""
 		},
@@ -40,6 +43,9 @@
 		},
 		"Brio_Recon_SqlServerLS_properties_typeProperties_userName": {
 			"value": "brio developer"
+		},
+		"LS_1_properties_typeProperties_url": {
+			"value": "https://saazdlgen2.dfs.core.windows.net"
 		},
 		"LS_ADLS_Briosa_properties_typeProperties_url": {
 			"value": "https://briosa.dfs.core.windows.net"

@@ -19,6 +19,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'Brio_Recon_SqlServerLS'"
 		},
+		"LS_1_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'LS_1'"
+		},
 		"LS_ADLS_Briosa_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'LS_ADLS_Briosa'"
@@ -54,6 +58,10 @@
 		"Brio_Recon_SqlServerLS_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "brio developer"
+		},
+		"LS_1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://saazdlgen2.dfs.core.windows.net"
 		},
 		"LS_ADLS_Briosa_properties_typeProperties_url": {
 			"type": "string",
@@ -97,6 +105,9 @@
 					"AzureDatabricks1_accessToken": {
 						"value": "[parameters('AzureDatabricks1_accessToken')]"
 					},
+					"LS_1_accountKey": {
+						"value": "[parameters('LS_1_accountKey')]"
+					},
 					"LS_ADLS_Briosa_accountKey": {
 						"value": "[parameters('LS_ADLS_Briosa_accountKey')]"
 					},
@@ -127,6 +138,9 @@
 					"SafiMySQL_connectionString": {
 						"value": "[parameters('SafiMySQL_connectionString')]"
 					},
+					"LS_1_properties_typeProperties_url": {
+						"value": "[parameters('LS_1_properties_typeProperties_url')]"
+					},
 					"LS_ADLS_Briosa_properties_typeProperties_url": {
 						"value": "[parameters('LS_ADLS_Briosa_properties_typeProperties_url')]"
 					},
@@ -142,6 +156,26 @@
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "brio-adf_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'brio-adf_ArmTemplate_0')]"
+			]
 		}
 	]
 }
